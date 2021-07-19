@@ -9,7 +9,6 @@ to_nepse=f"http://www.nepalstock.com/main/todays_price/index/"
 
 init(autoreset=True)
 
-# variable declaration
 
 titles=[]
 SN=[]
@@ -40,7 +39,19 @@ def pd_columns():
 
 
 def scrap():
-    
+
+    with open('metadata.json','r') as meatdata:
+        jsondata=json.loads(metadata.read())
+        name=jsondata["name"]
+        author=jsondata["author"]
+        discord=jsondata["discord"]
+        infos=[name,author,discord]
+        for cred in infos:
+            print(f'''
+
+{Style.BRIGHT}name: {Fore.Yellow}{cred}{Style.RESET}
+''')
+
     for page_indexing in range(12):
         to_skip=0
         vals=[]
