@@ -1,9 +1,10 @@
 import requests as rq
 import os
-from bs4 import BeautifulSoup
 import pandas as pd
+import json
 from colorama import Fore,Style,Back,init
-
+from bs4 import BeautifulSoup
+import time
 
 to_nepse=f"http://www.nepalstock.com/main/todays_price/index/"
 
@@ -40,18 +41,17 @@ def pd_columns():
 
 def scrap():
 
-    with open('metadata.json','r') as meatdata:
+    with open('metadata.json','r') as metadata:
         jsondata=json.loads(metadata.read())
-        name=jsondata["name"]
-        author=jsondata["author"]
-        discord=jsondata["discord"]
-        infos=[name,author,discord]
-        for cred in infos:
-            print(f'''
-
-{Style.BRIGHT}name: {Fore.Yellow}{cred}{Style.RESET}
-''')
-
+    name=jsondata["name"]
+    author=jsondata["author"]
+    discord=jsondata["discord"]
+    infos=[name,author,discord]
+    count=0
+    for cred in jsondata:
+        print(f'{Style.BRIGHT}{cred}: {Fore.YELLOW}{infos[count]}{Fore.RESET}')
+        count+=1
+    time.sleep(1)
     for page_indexing in range(12):
         to_skip=0
         vals=[]
