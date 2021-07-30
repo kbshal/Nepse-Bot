@@ -25,10 +25,10 @@ difference=[]
 
 
 
-def pd_columns():
-    global titles
+def pd_columns() -> list:
+
     for firstpage in range(1):
-        res=rq.get(f"{to_nepse}{firstpage}").text
+        res=rq.get(f"{to_nepse}{firstpage+1}").text
         souped_data=BeautifulSoup(res,'html5lib')
         main_table=souped_data.findAll('table',attrs={'class':'table table-condensed table-hover'})[0]
         #print(main_table)
@@ -36,7 +36,8 @@ def pd_columns():
             for td in (tds.find_all("td")):
                 titles.append(td.getText())
                 #print(td.getText())
-    titles.remove('S.N.')
+    headers=list(filter(lambda x: x!="S.N.",titles))
+    return headers
 
 
 def scrap():
@@ -79,7 +80,9 @@ def scrap():
                 except IndexError:
                     break
 
-def createCSV(file_name):
+def createCSV(file_name:str):
+
+    titles=pd_columns()
     df=pd.DataFrame(columns=titles)
     df["Traded Companies"]=traded_comp
     df["No. Of Transaction"]=no_of_trans
@@ -98,8 +101,7 @@ def createCSV(file_name):
 
 
 if  __name__=="__main__":
-    
-    pd_columns()
+
     scrap()
     yes_or_no=input("Do you want to save your file (y/n):  ")
     
