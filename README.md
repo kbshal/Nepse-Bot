@@ -1,2 +1,2 @@
 # Nepse-Bot
-A nepal stock bot which will scrap todays price index 
+Nepal stock web scraper which will scrape todays share price 
